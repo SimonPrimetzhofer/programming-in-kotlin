@@ -1,2 +1,1 @@
-sealed interface TaggedTextElement : TaggedElement, TextElement {
-}
+sealed interface TaggedTextElement : TaggedElement, TextElement

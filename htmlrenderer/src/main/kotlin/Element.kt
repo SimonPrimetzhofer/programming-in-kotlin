@@ -1,2 +1,1 @@
-sealed interface Element {
-}
+sealed interface Element

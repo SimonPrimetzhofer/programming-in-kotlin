@@ -1,3 +1,3 @@
 sealed interface ContainerElement : TaggedElement {
-    abstract val elements: List<Element>
+    val elements: List<Element>
 }

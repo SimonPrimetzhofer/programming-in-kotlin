@@ -1,4 +1,4 @@
-data class Page(val title: String, val elements: Array<Element>) {
+data class Page(val title: String, val elements: List<Element>) {
     constructor(title: String, vararg elements: Element)
-        : this(title, elements.asList().toTypedArray())
+        : this(title, elements.asList())
 }

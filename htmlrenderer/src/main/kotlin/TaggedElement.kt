@@ -4,5 +4,5 @@ sealed interface TaggedElement : Element {
     val openTag
         get() = "<$tag>"
 
-    abstract val tag: String
+    val tag: String
 }

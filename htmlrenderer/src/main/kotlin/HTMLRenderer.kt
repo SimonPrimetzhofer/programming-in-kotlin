@@ -1,14 +1,18 @@
 object HTMLRenderer {
-    fun render(element: Element) = when (element) {
+    fun render(element: Element): String = when (element) {
         is Text -> element.text
-        is Div -> "${element.openTag}\n${element.elements.map { "test" }}\n${element.closeTag}"
-        is ListItem -> ""
-        is HTMLList -> ""
-        is Heading -> ""
-        is Paragraph -> ""
+        is ContainerElement -> element.elements.joinToString("", element.openTag, element.closeTag){ render(it) }
+        is TaggedTextElement -> "${element.openTag}${element.text}${element.closeTag}"
     }
 
     fun render(page: Page): String {
-        return "TODO"
+        return "<html>" +
+                    "<head>" +
+                        "<title>${page.title}</title>" +
+                    "</head>" +
+                    "<body>" +
+                        page.elements.joinToString("") { render(it) } +
+                    "</body>" +
+                "</html>".indentEachLine()
     }
 }
