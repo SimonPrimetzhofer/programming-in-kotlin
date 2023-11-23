@@ -13,7 +13,7 @@ object HTMLRenderer {
     fun render(page: Page): String {
         return "<html>" +
                 ("\n<head>" +
-                        "\n\t<title>${page.title}</title>" +
+                        "\n<title>${page.title}</title>".indentEachLine() +
                         "\n</head>" +
                         "\n<body>" +
                         page.elements.joinToString("") { render(it) } +
