@@ -1,3 +1,6 @@
+import kotlin.math.max
+import kotlin.math.min
+
 class TDArray<T>(private val nRows: Int, private val nColumns: Int, initFn: (row: Int, col: Int) -> T) {
     // internal "array" (MutableList of MutableLists)
     // Use the following MutableList constructor:
@@ -10,20 +13,24 @@ class TDArray<T>(private val nRows: Int, private val nColumns: Int, initFn: (row
         }
 
     // secondary constructor, just call this with appropriate values (you can assume each row has the same length)
-    constructor(data: List<List<T>>) : this(data.size, data.firstOrNull()?.size ?: 0, { row, col ->
-        data[row][col]
-    })
+    constructor(data: List<List<T>>) :
+            this(data.size,
+                data.firstOrNull()?.size ?: 0, { row, col ->
+                    data[row][col]
+                })
 
     // Nicely formatted 2D Array string
     // Just use .toString() on each value
     // For left-alignment, you can use .padStart() on strings
     override fun toString(): String {
-        val lengthOfLongest = data.maxOf { it.maxOf { it.toString().length } }
         return buildString {
             // The "this" in this block is a StringBuilder
             // You can just call append("...") here to add stuff
             // to the final string
-            /* TODO */
+            data.forEach {
+                it.forEach { this.append("${it.toString()} ") }
+                this.append("\n")
+            }
         }
     }
 
@@ -37,17 +44,18 @@ class TDArray<T>(private val nRows: Int, private val nColumns: Int, initFn: (row
     operator fun unaryMinus() = nColumns
 
     // !arr should return dimension pair of arr (e.g., (15, 10))
-    operator fun not() = nRows
+    operator fun not() = dimension()
 
     // arr[row, col] should return value stored at that index or null if index is invalid
-    operator fun get(row: Int, col: Int) = data[row][col]
+    operator fun get(row: Int, col: Int) = if (row in 0..<+this || col in 0..<-this) data[row][col] else null
 
     // arr(row, col) should behave as arr[row, col]
     operator fun invoke(row: Int, col: Int) = get(row, col)
 
     // arr[row, col] = value should set the value at the corresponding loction if
     // the location is valid
-    operator fun set(row: Int, col: Int, newValue: T) = data[row].set(col, newValue)
+    operator fun set(row: Int, col: Int, newValue: T) =
+        if (row in 0..<+this || col in 0..<-this) data[row].set(col, newValue) else null
 
     // arr(row, col, value) should have as arr[row, col] = value
     operator fun invoke(row: Int, col: Int, newValue: T) = set(row, col, newValue)
@@ -55,32 +63,78 @@ class TDArray<T>(private val nRows: Int, private val nColumns: Int, initFn: (row
     // arr[rows, cols] (for example arr[1..4, 2..3]) should return a new TDArray
     // with the content in the specified ranges (in the example the rows 1, 2, 3, 4 and
     // the columns 2, 3)
-    operator fun get(rows: IntRange, cols: IntRange) = /* TODO */
+    operator fun get(rows: IntRange, cols: IntRange): TDArray<T>
+        {
+            val lowerBoundRow = max(rows.first, 1)
+            val upperBoundRow = min(rows.last + 1, nRows)
+
+            val lowerBoundCol = max(cols.first, 1)
+            val upperBoundCol = min(cols.last + 1, nColumns)
+
+            return TDArray(
+                upperBoundRow - lowerBoundRow,
+                upperBoundCol - lowerBoundCol,
+                ) {
+                row, col ->
+                    data[lowerBoundRow + row][lowerBoundCol + col]
+            }
+
+
+//            TDArray(
+//                min(rows.last - rows.first + 1, nRows),
+//                min(cols.last - cols.first + 1, nColumns)
+//            ) { row, col ->
+//                data[max(rows.first + row, 0)][max(cols.first + col, 0)]
+//            }
+        }
 
     // arr(rows, cols) should behave as arr[rows, cols]
-    operator fun invoke(rows: IntRange, cols: IntRange) = /* TODO */
+    operator fun invoke(rows: IntRange, cols: IntRange) = get(rows, cols)
 
-        // arr + str should call .toString() on every element in the array, append str to it and return a new array
-    operator fun plus(str: String) = /* TODO */
+    // arr + str should call .toString() on every element in the array, append str to it and return a new array
+    operator fun plus(str: String) =
+        TDArray(
+            nRows,
+            nColumns
+        ) { row, col -> get(row, col).toString() + str }
 
-        // x in arr should check if x is contained in any of the array's cells
-    operator /* TODO */
+    // x in arr should check if x is contained in any of the array's cells
+    operator fun contains(x: T) =
+        data.flatten().contains(x)
 
     // for (x in arr) should be possible, thus iterator() must be implemented
     // use an anonymous object for that
-    operator fun iterator(): Iterator<T> = /* TODO */
+    operator fun iterator(): Iterator<T> = object {
+        val iterator = data.flatten().iterator()
+    }.iterator // i would have just returned data.flatten().iterator but an anonymous object is required
 }
 
 // for TDArrays of Comparables we want an extension function to derive the minimum
 // If the array is empty, returns null
-fun </* TODO */> TDArray</* TODO */>.min(): /* TODO */ {
-    /* TODO */
+fun <T : Comparable<T>> TDArray<T>.min(): T? {
+    // TODO: gfoid ma ned, muas anfocha geh
+    var min = this[0, 0] ?: return null
+
+    for (elem in this) {
+        if (elem < min)
+            min = elem
+    }
+
+    return min
 }
 
 // for TDArrays of Comparables we want an extension function to derive the maximum
 // If the array is empty, returns null
-fun </* TODO */> TDArray</* TODO */>.max(): /* TODO */ {
-    /* TODO */
+fun <T : Comparable<T>> TDArray<T>.max(): T? {
+    // TODO: gfoid ma ned, muas anfocha geh
+    var max = this[0, 0] ?: return null
+
+    for (elem in this) {
+        if (elem > max)
+            max = elem
+    }
+
+    return max
 }
 
 fun main() {
