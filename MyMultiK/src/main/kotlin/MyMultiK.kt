@@ -65,10 +65,11 @@ class TDArray<T>(private val nRows: Int, private val nColumns: Int, initFn: (row
     // the columns 2, 3)
     operator fun get(rows: IntRange, cols: IntRange): TDArray<T>
         {
-            val lowerBoundRow = max(rows.first, 1)
+            // due to verbosity, i decided to introduce vals for upper and lower bounds
+            val lowerBoundRow = max(rows.first, 0)
             val upperBoundRow = min(rows.last + 1, nRows)
 
-            val lowerBoundCol = max(cols.first, 1)
+            val lowerBoundCol = max(cols.first, 0)
             val upperBoundCol = min(cols.last + 1, nColumns)
 
             return TDArray(
@@ -78,14 +79,6 @@ class TDArray<T>(private val nRows: Int, private val nColumns: Int, initFn: (row
                 row, col ->
                     data[lowerBoundRow + row][lowerBoundCol + col]
             }
-
-
-//            TDArray(
-//                min(rows.last - rows.first + 1, nRows),
-//                min(cols.last - cols.first + 1, nColumns)
-//            ) { row, col ->
-//                data[max(rows.first + row, 0)][max(cols.first + col, 0)]
-//            }
         }
 
     // arr(rows, cols) should behave as arr[rows, cols]
@@ -112,7 +105,6 @@ class TDArray<T>(private val nRows: Int, private val nColumns: Int, initFn: (row
 // for TDArrays of Comparables we want an extension function to derive the minimum
 // If the array is empty, returns null
 fun <T : Comparable<T>> TDArray<T>.min(): T? {
-    // TODO: gfoid ma ned, muas anfocha geh
     var min = this[0, 0] ?: return null
 
     for (elem in this) {
@@ -126,7 +118,6 @@ fun <T : Comparable<T>> TDArray<T>.min(): T? {
 // for TDArrays of Comparables we want an extension function to derive the maximum
 // If the array is empty, returns null
 fun <T : Comparable<T>> TDArray<T>.max(): T? {
-    // TODO: gfoid ma ned, muas anfocha geh
     var max = this[0, 0] ?: return null
 
     for (elem in this) {
@@ -194,6 +185,19 @@ fun main() {
     */
     println(arr[6..100, 8..100])
     println()
+
+    /* custom test case
+    0|0 0|1 0|2 0|3 0|4 0|5 0|6 0|7 0|8
+    1|0 1|1 1|2 1|3 1|4 1|5 1|6 1|7 1|8
+    2|0 2|1 2|2 2|3 2|4 2|5 2|6 2|7 2|8
+    3|0 3|1 3|2 3|3 3|4 3|5 3|6 3|7 3|8
+    4|0 4|1 4|2 4|3 4|4 4|5 4|6 4|7 4|8
+    5|0 5|1 5|2 5|3 5|4 5|5 5|6 5|7 5|8
+    6|0 6|1 6|2 6|3 6|4 6|5 6|6 6|7 6|8
+     */
+    println(arr[-100..6, -100..8])
+    println()
+
     /*
     0|0post 0|1post 0|2post 0|3post 0|4post 0|5post 0|6post 0|7post 0|8post 0|9post 0|10post
     1|0post 1|1post 1|2post 1|3post 1|4post 1|5post 1|6post 1|7post 1|8post 1|9post 1|10post
@@ -211,6 +215,7 @@ fun main() {
      13|0post 13|1post 13|2post 13|3post 13|4post 13|5post 13|6post 13|7post 13|8post 13|9post 13|10post
      14|0post 14|1post 14|2post 14|3post 14|4post 14|5post 14|6post 14|7post 14|8post 14|9post 14|10post
      */
+
     println(arr + "post")
     println()
     // true
