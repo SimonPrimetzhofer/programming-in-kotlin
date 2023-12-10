@@ -40,23 +40,29 @@ fun main(args: Array<String>) {
 
     // Task 4: Grading
 
-    val grades: Map<String, Grade> = TODO()
+    val grades: Map<String, Grade> = resultList.associateBy({ it.name }, { computeGrade(it.points) })
     println("grades = $grades \n")
 
     // Task 5: Grade statistics
 
-    val nStudentsWithGrade: Map<Grade, Int> = TODO()
+    val nStudentsWithGrade: Map<Grade, Int> = grades.values.groupingBy { it }.eachCount()
     println("nStudentsWithGrade = $nStudentsWithGrade \n")
 
     // Task 6: Number solved per assignment
 
-    val nSolvedPerAssnmt: List<Pair<Int, Int>> = TODO()
+    val nSolvedPerAssnmt: List<Pair<Int, Int>> =
+        (1..(resultList.maxOfOrNull { it.points.size } ?: 0))
+            .map { index ->
+                Pair(index,
+                    resultList.map { it.points[index - 1] }.count { it >= 3 })
+            }
+
     println("nSolvedPerAssnmt = $nSolvedPerAssnmt \n")
 
 }
 
 fun computeGrade(points: List<Int>): Grade {
-    val grade = if (points.filter { p -> p >= 3 }.count() < 8) Grade.INSUFFICIENT
+    val grade = if (points.count { p -> p >= 3 } < 8) Grade.INSUFFICIENT
     else {
         val avrg = points.sorted().reversed().drop(2).sum() / 8.0
         if (avrg < 5.0) Grade.INSUFFICIENT
