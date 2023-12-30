@@ -19,8 +19,8 @@ fun main() {
     val intComplexAddExpr = Add(Add(Var("n"), Lit(100)), Minus(Var("m")))
 
     val intSimpleMultiplyExpr = Multiply(Lit(12), Lit(5))
-    val intMediumMultiplyexpr = Multiply<Int>(Var("n"), Minus(Var("m")))
-    val intComplexMultiplyexpr = Multiply(Add(Var("n"), Var("m")), Multiply(Minus(Var("m")), Lit(-4)))
+    val intMediumMultiplyExpr = Multiply<Int>(Var("n"), Minus(Var("m")))
+    val intComplexMultiplyExpr = Multiply(Add(Var("n"), Var("m")), Multiply(Minus(Var("m")), Lit(-4)))
 
     println("Integer Expressions:")
     println("-------------------------------------------------------------------------------------------------")
@@ -30,8 +30,8 @@ fun main() {
     printAndEvalExpression(intMediumAddExpr, intData, IntegerField)
     printAndEvalExpression(intComplexAddExpr, intData, IntegerField)
     printAndEvalExpression(intSimpleMultiplyExpr, intData, IntegerField)
-    printAndEvalExpression(intMediumMultiplyexpr, intData, IntegerField)
-    printAndEvalExpression(intComplexMultiplyexpr, intData, IntegerField)
+    printAndEvalExpression(intMediumMultiplyExpr, intData, IntegerField)
+    printAndEvalExpression(intComplexMultiplyExpr, intData, IntegerField)
     println("-------------------------------------------------------------------------------------------------")
 
     // Rationals
@@ -45,8 +45,8 @@ fun main() {
     val ratComplexAddExpr = Add(Add(Var("n"), Lit(Rational(1, 1))), Minus(Var("m")))
 
     val ratSimpleMultiplyExpr = Multiply(Lit(Rational(1, 2)), Lit(Rational(1, 5)))
-    val ratMediumMultiplyexpr = Multiply<Rational>(Var("n"), Minus(Var("m")))
-    val ratComplexMultiplyexpr = Multiply(Add(Var("n"), Var("m")), Multiply(Minus(Var("m")), Lit(Rational(-4, 2))))
+    val ratMediumMultiplyExpr = Multiply<Rational>(Var("n"), Minus(Var("m")))
+    val ratComplexMultiplyExpr = Multiply(Add(Var("n"), Var("m")), Multiply(Minus(Var("m")), Lit(Rational(-4, 2))))
 
     println("\nRational Expressions:")
     println("-------------------------------------------------------------------------------------------------")
@@ -56,8 +56,8 @@ fun main() {
     printAndEvalExpression(ratMediumAddExpr, ratData, RationalField)
     printAndEvalExpression(ratComplexAddExpr, ratData, RationalField)
     printAndEvalExpression(ratSimpleMultiplyExpr, ratData, RationalField)
-    printAndEvalExpression(ratMediumMultiplyexpr, ratData, RationalField)
-    printAndEvalExpression(ratComplexMultiplyexpr, ratData, RationalField)
+    printAndEvalExpression(ratMediumMultiplyExpr, ratData, RationalField)
+    printAndEvalExpression(ratComplexMultiplyExpr, ratData, RationalField)
     println("-------------------------------------------------------------------------------------------------")
 
     // Doubles
@@ -71,8 +71,8 @@ fun main() {
     val doubleComplexAddExpr = Add(Add(Var("n"), Lit(10.0)), Minus(Var("m")))
 
     val doubleSimpleMultiplyExpr = Multiply(Lit(1.2), Lit(5.0))
-    val doubleMediumMultiplyexpr = Multiply<Double>(Var("n"), Minus(Var("m")))
-    val doubleComplexMultiplyexpr = Multiply(Add(Var("n"), Var("m")), Multiply(Minus(Var("m")), Lit(-4.2)))
+    val doubleMediumMultiplyExpr = Multiply<Double>(Var("n"), Minus(Var("m")))
+    val doubleComplexMultiplyExpr = Multiply(Add(Var("n"), Var("m")), Multiply(Minus(Var("m")), Lit(-4.2)))
 
     println("\nDouble Expressions:")
     println("-------------------------------------------------------------------------------------------------")
@@ -82,8 +82,8 @@ fun main() {
     printAndEvalExpression(doubleMediumAddExpr, doubleData, DoubleField)
     printAndEvalExpression(doubleComplexAddExpr, doubleData, DoubleField)
     printAndEvalExpression(doubleSimpleMultiplyExpr, doubleData, DoubleField)
-    printAndEvalExpression(doubleMediumMultiplyexpr, doubleData, DoubleField)
-    printAndEvalExpression(doubleComplexMultiplyexpr, doubleData, DoubleField)
+    printAndEvalExpression(doubleMediumMultiplyExpr, doubleData, DoubleField)
+    printAndEvalExpression(doubleComplexMultiplyExpr, doubleData, DoubleField)
     println("-------------------------------------------------------------------------------------------------")
 
     // Complex

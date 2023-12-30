@@ -19,7 +19,7 @@ object RationalField : Field<Rational> {
         val minDenominator = gcd(x.denominator, y.denominator).absoluteValue
 
         return Rational(
-            x.numerator * y.denominator / minDenominator,
+            x.numerator * y.numerator / minDenominator,
             x.denominator * y.denominator / minDenominator
         )
     }
