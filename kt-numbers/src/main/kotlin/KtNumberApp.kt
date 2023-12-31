@@ -111,16 +111,39 @@ fun main() {
     printAndEvalExpression(complexMediumMultiplyexpr, complexData, ComplexField)
     printAndEvalExpression(complexComplexMultiplyexpr, complexData, ComplexField)
     println("-------------------------------------------------------------------------------------------------")
+
+    println("\nExpressions to Simplify:")
+    println("-------------------------------------------------------------------------------------------------")
+    printAndSimplifyExpression(Lit(Rational(1, 2)), RationalField)
+    printAndSimplifyExpression(Var("n"), RationalField)
+    printAndSimplifyExpression(Add(Lit(Rational(1, 2)), Lit(RationalField.zero)), RationalField)
+    printAndSimplifyExpression(Add(Lit(RationalField.zero), Lit(Rational(1, 2))), RationalField)
+    printAndSimplifyExpression(Minus(Minus(Lit(Rational(1, 2)))), RationalField)
+    printAndSimplifyExpression(Multiply(Lit(Rational(1, 2)), Lit(RationalField.zero)), RationalField)
+    printAndSimplifyExpression(Multiply(Lit(RationalField.zero), Lit(Rational(1, 2))), RationalField)
+    printAndSimplifyExpression(Multiply(Lit(Rational(1, 2)), Lit(RationalField.one)), RationalField)
+    printAndSimplifyExpression(Multiply(Lit(RationalField.one), Lit(Rational(1, 2))), RationalField)
+    printAndSimplifyExpression(Recip(Recip(Lit(Rational(1, 2)))), RationalField)
+    println("-------------------------------------------------------------------------------------------------")
 }
 
 private fun <T> printAndEvalExpression(expr: Expr<T>, data: Map<String, T>, field: Field<T>) {
-    val simplifiedExpr = expr.simplify(field)
     println(
         "Initial Expression: ${expr.show()}\tEvaluated Expression: ${
             expr.eval(
                 data,
                 field
             )
-        }\tSimplified Expression: ${simplifiedExpr.show()}\tEvaluated Simplified Expression: ${simplifiedExpr.eval(data, field)}"
+        }"
+    )
+}
+
+private fun <T> printAndSimplifyExpression(expr: Expr<T>, field: Field<T>) {
+    println(
+        "Initial Expression: ${expr.show()}\tSimplified Expression: ${
+            expr.simplify(
+                field
+            ).show()
+        }"
     )
 }

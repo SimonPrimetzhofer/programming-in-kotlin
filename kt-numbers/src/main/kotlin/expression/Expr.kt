@@ -39,7 +39,6 @@ fun <T> Expr<T>.eval(data: Map<String, T>, field: Field<T>): T = when (this) {
         left.eval(data, field),
         right.eval(data, field)
     )
-
     is Recip -> field.recip(sub.eval(data, field))
     else -> throw Exception("Cannot evaluate expression!")
 }
@@ -53,59 +52,42 @@ fun <T> Expr<T>.simplify(field: Field<T>): Expr<T> {
             val simplifiedRight = right.simplify(field)
 
             // a + 0 = 0 + a = a
-            if (simplifiedLeft == field.zero) {
+            if (simplifiedLeft == Lit(field.zero)) {
                 return simplifiedRight
-            } else if (simplifiedRight == field.zero)
+            } else if (simplifiedRight == Lit(field.zero)){
                 return simplifiedLeft
-
-            // a + -a = 0
-//                if (this.left is Minus && this.right is Var) {
-//                    when (this.left) {
-//                        is Var -> {
-//                            if (this.left == this.right) {
-//                                return Lit(field.zero)
-//                            } else {
-//                                Add (simplifiedLeft, simplifiedRight)
-//                            }
-//                        }
-//                        else -> this
-//                    }
-//                }
+            }
 
             return Add(simplifiedLeft, simplifiedRight)
         }
-
         is Minus -> {
             when (val simplifiedSub = sub.simplify(field)) {
-                is Minus -> simplifiedSub
-                else -> this
+                is Minus -> simplifiedSub.sub
+                else -> simplifiedSub
             }
         }
-
         is Multiply -> {
             val simplifiedLeft = left.simplify(field)
             val simplifiedRight = right.simplify(field)
 
-            if (simplifiedLeft == field.zero || simplifiedRight == field.zero) {
+            if (simplifiedLeft == Lit(field.zero) || simplifiedRight == Lit(field.zero)) {
                 return Lit(field.zero)
             }
 
-            if (simplifiedLeft == field.one) {
+            if (simplifiedLeft == Lit(field.one)) {
                 return simplifiedRight
-            } else if (simplifiedRight == field.one) {
+            } else if (simplifiedRight == Lit(field.one)) {
                 return simplifiedLeft
             }
 
             return Multiply(simplifiedLeft, simplifiedRight)
         }
-
         is Recip -> {
             when (val simplifiedSub = sub.simplify(field)) {
-                is Recip -> simplifiedSub
-                else -> this
+                is Recip -> simplifiedSub.sub
+                else -> simplifiedSub
             }
         }
-
         else -> throw Exception("Cannot simplify expression!")
     }
 }
